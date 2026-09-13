@@ -11,39 +11,19 @@ Research project supervised by **Prof. Ramon Casanella**.
 
 ---
 
-## Result
+## What this studies
 
-**A bathroom scale performed as well as the clinical device.**
+Applanation tonometry is the clinical reference for assessing arterial stiffness, but it
+needs a trained operator and dedicated equipment. Ballistocardiography and impedance
+plethysmography can both be captured by a device a person already stands on.
 
-On the common cohort (n = 67), scale-derived BCG estimated age to within 9.39 years,
-against 8.81 years for reference applanation tonometry, the clinical standard method.
-A paired Wilcoxon test cannot separate them (p = 0.089). Both clear the mean-age
-baseline of 10.51 years, and both clear a demographics-only floor, so the signal is
-cardiovascular rather than body size.
+The question is whether those two signals carry enough cardiovascular information to
+estimate age, and how they compare against the clinical reference measured on the same
+subjects. Age is used as a proxy outcome: it is known exactly for every subject, which
+makes it a clean target for testing whether a signal carries cardiovascular information
+at all.
 
-Age estimation from these signals is a hard problem, and the reference column is the
-benchmark to read every other row against.
-
-| Model | n | MAE (years) | 95% CI | R² | permutation p |
-|---|---|---|---|---|---|
-| Mean-age baseline | 67 | 10.51 | | 0.000 | |
-| Demographics only | 67 | 10.78 | 9.21 to 12.49 | -0.033 | |
-| **Reference tonometry** | 67 | **8.81** | 7.25 to 10.35 | +0.222 | 0.0099 |
-| **Scale-BCG** | 67 | **9.39** | 7.81 to 11.16 | +0.131 | 0.0099 |
-| Scale-BCG, full valid cohort | 71 | 9.34 | 7.85 to 10.91 | +0.172 | |
-| IPG | 67 | 9.81 | 7.65 to 12.10 | +0.049 | 0.0396 |
-| BCG and IPG combined | 67 | 10.09 | 7.97 to 12.20 | +0.040 | 0.069 |
-
-Paired Wilcoxon signed-rank, Bonferroni-corrected at 0.05/3 = 0.0167:
-
-- Reference vs BCG: p = 0.089, indistinguishable
-- Reference vs IPG: p = 0.795, indistinguishable
-- BCG vs IPG: p = 0.041, indistinguishable at the corrected threshold
-
-The BCG signal is driven by fiducial timings, chiefly `bcgw_IJ_ms`, the I-to-J interval.
-
-Combining BCG and IPG did not improve on either signal alone, so the two are reported
-separately.
+Results, figures and statistical tests are in the notebook.
 
 ---
 
@@ -61,23 +41,23 @@ distribution, intersected with physiological guardrails. The notebook states the
 plainly: hand-picking limits "would make the analyst a hidden source of bias".
 
 **The pre-specified model is reported even when it loses.** RandomForest was fixed in
-advance. In several stages ExtraTrees scored marginally lower, and the notebook reports
-RandomForest anyway, noting the difference is within noise. Selecting the winner after
+advance. Where another estimator scored marginally lower, the notebook reports
+RandomForest anyway and notes the difference is within noise. Selecting the winner after
 the fact inflates apparent performance; this avoids that.
 
 **Leave-one-out cross-validation** throughout, with **bootstrap 95% confidence
 intervals** on every MAE and **permutation tests** for significance. A nested-CV check
-confirmed hyperparameter tuning gained nothing over the default configuration
-(8.88 vs 8.81 years), which is reported rather than quietly dropped.
+confirmed that hyperparameter tuning gained nothing over the default configuration,
+which is reported rather than quietly dropped.
 
 **Corruption detection and recovery.** Each subject CSV interleaves single-row metadata,
 100 to 240 per-beat scalars, and waveform blocks. Files with known unrecoverable
 corruption are listed explicitly. Partially damaged files are recovered where the
 undamaged portion is usable, and excluded where it is not.
 
-**Transparent exclusions.** 82 subject records loaded, 72 usable, 10 rejected, with
-per-cohort counts reported (db1 n = 29, db2 n = 42) and per-cohort error broken out
-(db1 MAE 7.80, db2 MAE 10.40).
+**Transparent exclusions.** Every record that is dropped is counted and reported, at
+both the beat level and the subject level, and error is broken out per source cohort
+rather than pooled into a single headline figure.
 
 ## Features
 
@@ -101,9 +81,10 @@ the underlying recordings.
 ## Data availability
 
 **The subject recordings are not included in this repository and are not redistributable
-here.** They consist of per-subject physiological recordings (`s1.csv` through
-`s87.csv`) collected under academic supervision. Enquiries about access should be
-directed to the supervising institution rather than to this repository.
+here.** They consist of per-subject physiological recordings (`s1.csv` through `s87.csv`)
+and are the property of **Universitat Politecnica de Catalunya (UPC)**, where the study
+was conducted. Enquiries about access should be directed to UPC rather than to this
+repository.
 
 To run the notebook, place the per-subject CSV files in a directory and point
 `<DATA_DIR>` at it.
