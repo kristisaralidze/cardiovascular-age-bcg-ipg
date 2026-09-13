@@ -1,0 +1,15 @@
+# Subject recordings are not redistributable. See the data availability
+# statement in README.md.
+*.csv
+data/
+s[0-9]*.csv
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+.ipynb_checkpoints/
+
+# OS
+.DS_Store
