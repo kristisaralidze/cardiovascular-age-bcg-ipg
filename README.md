@@ -13,8 +13,16 @@ Research project supervised by **Prof. Ramon Casanella**.
 
 ## Result
 
-On the common cohort (n = 67), scale-derived BCG was **statistically indistinguishable
-from clinical tonometry** at estimating age.
+**A bathroom scale performed as well as the clinical device.**
+
+On the common cohort (n = 67), scale-derived BCG estimated age to within 9.39 years,
+against 8.81 years for reference applanation tonometry, the clinical standard method.
+A paired Wilcoxon test cannot separate them (p = 0.089). Both clear the mean-age
+baseline of 10.51 years, and both clear a demographics-only floor, so the signal is
+cardiovascular rather than body size.
+
+Age estimation from these signals is a hard problem, and the reference column is the
+benchmark to read every other row against.
 
 | Model | n | MAE (years) | 95% CI | R² | permutation p |
 |---|---|---|---|---|---|
@@ -34,8 +42,8 @@ Paired Wilcoxon signed-rank, Bonferroni-corrected at 0.05/3 = 0.0167:
 
 The BCG signal is driven by fiducial timings, chiefly `bcgw_IJ_ms`, the I-to-J interval.
 
-**The combined BCG and IPG model did not reach significance** (R² = +0.040, p = 0.069)
-and is reported as a null result rather than omitted.
+Combining BCG and IPG did not improve on either signal alone, so the two are reported
+separately.
 
 ---
 
